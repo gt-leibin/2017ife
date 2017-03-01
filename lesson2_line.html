@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>three.js line</title>
+	<style>
+		body { margin: 0; }
+		canvas { width: 100%; height: 100% }
+	</style>
+</head>
+<body>
+
+</body>
+	<script type="text/javascript" src="three.js"></script>
+	<script type="text/javascript">
+		//renderer
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth,window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+		//camera
+		var camera =  new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,500);
+		camera.position.set(0,0,100);
+		camera.lookAt(new THREE.Vector3(0,0,0));
+		//scene
+		var scene =  new THREE.Scene();
+		// next define a material  
+		// for lines we have to use LineBasicMaterial  LineDashedMaterial
+		var material = new THREE.LineBasicMaterial({color: 0xffffff});
+		// 几何体
+		// 向量 画出三个点  
+		var geometry  =  new THREE.Geometry();
+		geometry.vertices.push(new THREE.Vector3(-10,0,0));
+		geometry.vertices.push(new THREE.Vector3(0,10,0));
+		geometry.vertices.push(new THREE.Vector3(10,0,0));
+		// 三点连成线
+		var line =  new THREE.Line(geometry,material);
+		scene.add(line);
+
+		renderer.render(scene,camera);
+
+
+
+
+
+
+	</script>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>little cute car </title>
+	<style>
+		body { margin: 0; }
+		canvas { width: 100%; height: 100% }
+	</style>
+</head>
+<body>
+
+</body>
+	<script type="text/javascript" src="three.js"></script>
+	<script type="text/javascript">
+		//renderer
+		var renderer = new THREE.WebGLRenderer({
+			antialias: true,
+			precision: "highp"
+		});
+		renderer.setSize(window.innerWidth,window.innerHeight);
+		renderer.setClearColor(0xefefef, 1.0);
+		renderer.shadowMapEnabled = true;
+		renderer.shadowMapSoft = true;
+		document.body.appendChild(renderer.domElement);
+		
+
+		var perspectiveCamera =  new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,500)
+		perspectiveCamera.position.set(12,5,10);
+		perspectiveCamera.lookAt(new THREE.Vector3(4,0,0));
+
+		//scene
+		var scene =  new THREE.Scene();
+		
+		//material
+		var material = new THREE.LineBasicMaterial({color: 0xffffff});
+		// 画出xyz轴坐标系 coordinate
+		var geometryx  =  new THREE.Geometry();
+		var geometryy  =  new THREE.Geometry();
+		var geometryz  =  new THREE.Geometry();
+		geometryx.vertices.push(new THREE.Vector3(0,0,0));
+		geometryx.vertices.push(new THREE.Vector3(10,0,0));
+		geometryy.vertices.push(new THREE.Vector3(0,0,0));
+		geometryy.vertices.push(new THREE.Vector3(0,7,0));
+		geometryz.vertices.push(new THREE.Vector3(0,0,0));
+		geometryz.vertices.push(new THREE.Vector3(0,0,5));
+		// 三点连成线
+		var linex =  new THREE.Line(geometryx,material);
+		var liney =  new THREE.Line(geometryy,material);
+		var linez =  new THREE.Line(geometryz,material);
+		// scene.add(linex,liney,linez);
+
+
+		//通用颜色
+		var commonColor = 0xcacaca;
+		//车身
+		var cube =  new THREE.Mesh(
+			new THREE.CubeGeometry(10,5,5),
+			new THREE.MeshPhongMaterial({
+			    color: 0xffffff
+			})
+		);
+		cube.castShadow = true;
+		scene.add(cube);
+		//车轮
+		var wheel1 = new THREE.Mesh(
+			new THREE.TorusGeometry(1, 0.3, 12, 36),
+			new THREE.MeshPhongMaterial({
+			    color: 0xffffff
+			})
+		);
+		var xV = new THREE.Vector3(1,0,0);
+		var zV = new THREE.Vector3(0,0,1);
+		var yV = new THREE.Vector3(0,1,0);
+		wheel1.translateOnAxis(zV,2.5).translateOnAxis(xV,-2).translateOnAxis(yV,-2);
+		var wheel2 = wheel1.clone();
+		var wheel3 = wheel1.clone();
+
+		wheel2.translateOnAxis(xV,4);
+		wheel3.translateOnAxis(zV,-5);
+
+		var wheel4 = wheel2.clone();//wheel4在wheel2移动好位置之后再clone
+		wheel4.translateOnAxis(zV,-5);
+		scene.add(wheel1).add(wheel2).add(wheel3).add(wheel4);
+
+		//车头优化
+		var leftEye = new THREE.Mesh(
+			new THREE.SphereGeometry(0.5,80,62),
+			new THREE.MeshPhongMaterial({
+				color: 0xffffff
+			}));
+		leftEye.translateOnAxis(xV,5).translateOnAxis(yV,1).translateOnAxis(zV,1);
+		var rightEye = leftEye.clone();
+		rightEye.translateOnAxis(zV,-2);
+		scene.add(leftEye).add(rightEye);
+		var mouth =  new THREE.Mesh(
+			new THREE.SphereGeometry(1,80,62,0,Math.PI* 2,Math.PI/2,Math.PI),
+			new THREE.MeshPhongMaterial({
+				olor: 0xffffff
+			}));
+		mouth.translateOnAxis(xV,5).translateOnAxis(yV,-1);
+		scene.add(mouth);
+
+
+		//光源
+ 		var light = new THREE.PointLight(0xffffff,  1, 100, Math.PI / 6, 25);
+		light.position.set(10, 10, 10);
+		scene.add(light);
+		renderer.render(scene,perspectiveCamera);
+
+
+
+
+
+
+
+
+
+	</script>
+</html>

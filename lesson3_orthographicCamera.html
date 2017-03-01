@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>three.js orthographicCamera</title>
+	<style>
+		body { margin: 0; }
+		canvas { width: 100%; height: 100% }
+	</style>
+</head>
+<body>
+
+</body>
+	<script type="text/javascript" src="three.js"></script>
+	<script type="text/javascript">
+		//renderer
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth,window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+		
+		//orthographicCamera camera
+		var orthographicCamera = new THREE.OrthographicCamera(-2,2,1.5,-1.5,1,10);
+		orthographicCamera.position.set(0,0,5);
+		// perspectiveCamera ?? position.set()  与lookAt()区别？？
+		var perspectiveCamera =  new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,1,500)
+		perspectiveCamera.position.set(10,10,10);
+		perspectiveCamera.lookAt(new THREE.Vector3(0,0,0));
+
+		//scene
+		var scene =  new THREE.Scene();
+		//material
+		var material = new THREE.LineBasicMaterial({color: 0xffffff});
+		// 画出xyz轴坐标系 coordinate
+		var geometryx  =  new THREE.Geometry();
+		var geometryy  =  new THREE.Geometry();
+		var geometryz  =  new THREE.Geometry();
+		geometryx.vertices.push(new THREE.Vector3(0,0,0));
+		geometryx.vertices.push(new THREE.Vector3(10,0,0));
+		geometryy.vertices.push(new THREE.Vector3(0,0,0));
+		geometryy.vertices.push(new THREE.Vector3(0,10,0));
+		geometryz.vertices.push(new THREE.Vector3(0,0,0));
+		geometryz.vertices.push(new THREE.Vector3(0,0,10));
+		// 三点连成线
+		var linex =  new THREE.Line(geometryx,material);
+		var liney =  new THREE.Line(geometryy,material);
+		var linez =  new THREE.Line(geometryz,material);
+		scene.add(linex,liney,linez);
+
+
+		//cube
+		var cube =  new THREE.Mesh(
+			new THREE.CubeGeometry(1,1,1,1,2,3),
+			new THREE.MeshBasicMaterial({
+					color:0xff0000,
+					wireframe: true
+				})
+			)
+		scene.add(cube);
+
+		renderer.render(scene,perspectiveCamera);
+
+
+
+
+
+
+
+
+
+	</script>
+</html>
